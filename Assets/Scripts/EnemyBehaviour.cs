@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,16 +13,10 @@ public class EnemyBehaviour : MonoBehaviour
     private int currentWPIndex = 0;
     private Vector2 currentDir;
 
-    EnemyBehaviour(Transform startWP)
-    {
-        SetNextWaypoint(startWP);
-    }
-    
     void Start()
     {
         if (currentWP == null)
         {
-            currentWP = transform;
             SetNextWaypoint(WaypointsHandler.waypointList[currentWPIndex]);
         }
     }

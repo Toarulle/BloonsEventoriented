@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1717750554700965588}
   - component: {fileID: 2196442275301917632}
   - component: {fileID: -2517858581811065541}
+  - component: {fileID: 2405982933113905991}
+  - component: {fileID: 3041656837776210064}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -74,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2135585597343286014, guid: 5aa8b770bc43046bc8d993d0d5b7f4a5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2d880304915ea8244a1669d2503b9d0e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,3 +101,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   sensitivity: 0.1
+  moneyWhenKilled: 1
+  deathPort: {fileID: 11400000, guid: 24f6c1c6072e6b84ca2d2a04a5110529, type: 2}
+  moneyPort: {fileID: 11400000, guid: ac518e07a3c8d5d45b9545b5bcc849e8, type: 2}
+--- !u!58 &2405982933113905991
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696498462990897554}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!50 &3041656837776210064
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696498462990897554}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

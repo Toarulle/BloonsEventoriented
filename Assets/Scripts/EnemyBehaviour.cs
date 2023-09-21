@@ -6,9 +6,13 @@ using UnityEngine.Serialization;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-
+    [SerializeField] public int health = 1;
     [SerializeField] public float speed = 1f;
     [SerializeField] public float sensitivity = 0.1f;
+    [SerializeField] public int moneyWhenKilled = 1;
+    public DeathPortObject deathPort = null;
+    public MoneyPortObject moneyPort = null;
+
     private Transform currentWP = null;
     private int currentWPIndex = 0;
     private Vector2 currentDir;
@@ -35,21 +39,27 @@ public class EnemyBehaviour : MonoBehaviour
     private void MoveTowardsCurrentWaypoint()
     {
         transform.Translate(currentDir * (Time.deltaTime * speed),Space.World);
-        if (Vector2.Distance(transform.position, currentWP.position) < sensitivity)
+        if (Vector2.Distance(transform.position, currentWP.position) <= sensitivity)
         {
+            currentWPIndex++;
             if (currentWPIndex == WaypointsHandler.waypointList.Count)
             {
-                Destroy();
+                Destroy(gameObject);
             }
             else
             {
-                SetNextWaypoint(WaypointsHandler.waypointList[++currentWPIndex]);
+                SetNextWaypoint(WaypointsHandler.waypointList[currentWPIndex]);
             }
         }
     }
 
-    private void Destroy()
+    public void Pop(int damage)
     {
-        Destroy(gameObject);
+        health -= damage;
+        if (health <= 0)
+        {
+            deathPort.Pop(gameObject);
+            moneyPort.Earn(moneyWhenKilled);
+        }
     }
 }

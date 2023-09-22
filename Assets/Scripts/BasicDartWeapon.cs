@@ -10,10 +10,10 @@ public class BasicDartWeapon : MonoBehaviour
     [SerializeField] private float timeBetweenShots = 1f;
     [SerializeField] private float shootTime = 0f;
 
-    [SerializeField] private List<GameObject> enemiesInRange = new List<GameObject>();
-    private GameObject currentTarget = null;
+    [SerializeField] private List<EnemyBehaviour> enemiesInRange = new List<EnemyBehaviour>();
+    private EnemyBehaviour currentTarget = null;
     
-    private void Update()
+    private void FixedUpdate()
     {
         shootTime += Time.deltaTime;
         if (enemiesInRange.Count == 0) return;
@@ -23,24 +23,34 @@ public class BasicDartWeapon : MonoBehaviour
             UpdateTarget();
             Shoot();
             shootTime = 0f;
+            currentTarget = null;
         }
     }
 
     private void Shoot()
     {
-        currentTarget.GetComponent<EnemyBehaviour>().Pop(damage);
+        if (currentTarget.Pop(damage))
+        {
+            enemiesInRange.Remove(currentTarget);
+        }
     }
 
     private void UpdateTarget()
     {
-        currentTarget = enemiesInRange.First();
+        foreach (var enemy in enemiesInRange)
+        {
+            if (currentTarget == null || enemy.DistanceTraveled > currentTarget.DistanceTraveled)
+            {
+                currentTarget = enemy;
+            }
+        }
     }
     private void OnTriggerEnter2D(Collider2D col)
     {
-        enemiesInRange.Add(col.gameObject);
+        enemiesInRange.Add(col.gameObject.GetComponent<EnemyBehaviour>());
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        enemiesInRange.Remove(other.gameObject);
+        enemiesInRange.Remove(other.gameObject.GetComponent<EnemyBehaviour>());
     }
 }

@@ -23,7 +23,7 @@ public class WaveHandler : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.N))
         {
             if (enemies.Count == 0 && currentWave < enemiesPerWave.Count-1)
             {

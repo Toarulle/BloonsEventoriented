@@ -9,6 +9,7 @@ public class BasicDartWeapon : MonoBehaviour
     [SerializeField] private int damage = 1;
     [SerializeField] private float timeBetweenShots = 1f;
     [SerializeField] private float shootTime = 0f;
+    [SerializeField] public float range = 0f;
 
     [SerializeField] private List<EnemyBehaviour> enemiesInRange = new List<EnemyBehaviour>();
     private EnemyBehaviour currentTarget = null;
@@ -16,20 +17,23 @@ public class BasicDartWeapon : MonoBehaviour
     private void FixedUpdate()
     {
         shootTime += Time.deltaTime;
-        if (enemiesInRange.Count == 0) return;
+        //if (enemiesInRange.Count == 0) return;
 
         if (shootTime >= timeBetweenShots)
         {
             UpdateTarget();
-            Shoot();
-            shootTime = 0f;
-            currentTarget = null;
+            if (currentTarget!= null)
+            {
+                Shoot();
+                shootTime = 0f;
+                currentTarget = null;
+            }
         }
     }
 
     private void Shoot()
     {
-        if (currentTarget.Pop(damage))
+        if (currentTarget.Pop(damage))  
         {
             enemiesInRange.Remove(currentTarget);
         }
@@ -37,20 +41,39 @@ public class BasicDartWeapon : MonoBehaviour
 
     private void UpdateTarget()
     {
-        foreach (var enemy in enemiesInRange)
+        Vector2 pos = transform.position;
+        int layerMask = LayerMask.GetMask("Balloons");
+
+        Collider2D[] collider = Physics2D.OverlapCircleAll(pos, range, layerMask);
+        for (int i = 0; i < collider.Length; i++)
         {
-            if (currentTarget == null || enemy.DistanceTraveled > currentTarget.DistanceTraveled)
+            var temp = collider[i].GetComponent<EnemyBehaviour>();
+            if (currentTarget == null || temp.DistanceTraveled > currentTarget.DistanceTraveled)
             {
-                currentTarget = enemy;
+                currentTarget = temp;
             }
         }
+        //
+        // foreach (var enemy in enemiesInRange)
+        // {
+        //     if (currentTarget == null || enemy.DistanceTraveled > currentTarget.DistanceTraveled)
+        //     {
+        //         currentTarget = enemy;
+        //     }
+        // }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, range);
+    }
+
     private void OnTriggerEnter2D(Collider2D col)
     {
-        enemiesInRange.Add(col.gameObject.GetComponent<EnemyBehaviour>());
+        //enemiesInRange.Add(col.gameObject.GetComponent<EnemyBehaviour>());
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        enemiesInRange.Remove(other.gameObject.GetComponent<EnemyBehaviour>());
+        //enemiesInRange.Remove(other.gameObject.GetComponent<EnemyBehaviour>());
     }
 }

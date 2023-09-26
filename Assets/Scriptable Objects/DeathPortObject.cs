@@ -11,6 +11,6 @@ public class DeathPortObject : ScriptableObject
     public void Pop(GameObject poppedBalloon)
     {
         onPop(this, poppedBalloon);
-        Destroy(poppedBalloon, 18/60f);
+        Destroy(poppedBalloon, 16/60f);
     }
 }

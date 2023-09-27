@@ -8,10 +8,11 @@ public class EnemyBehaviour : MonoBehaviour
 {
     [SerializeField] public int health = 1;
     [SerializeField] public float speed = 1f;
-    [SerializeField] public float sensitivity = 0.1f;
+    [SerializeField] public float checkpointSensitivity = 0.1f;
     [SerializeField] public int moneyWhenKilled = 1;
-    [SerializeField] public List<Sprite> balloons = null;
+    [SerializeField] public List<Sprite> balloonSprites = null;
     [SerializeField] private Animator animator = null;
+    private List<WeaponBehaviour> targetedBy = new List<WeaponBehaviour>();
     public DeathPortObject deathPort = null;
     public MoneyPortObject moneyPort = null;
     private float totalDistance = 0;
@@ -20,6 +21,7 @@ public class EnemyBehaviour : MonoBehaviour
     private Transform currentWP = null;
     private int currentWPIndex = 0;
     private Vector2 currentDir;
+    private SpriteRenderer spriteRend = null;
 
     public float DistanceTraveled
     {
@@ -30,6 +32,7 @@ public class EnemyBehaviour : MonoBehaviour
     
     void Start()
     {
+        spriteRend = this.GetComponent<SpriteRenderer>();
         if (currentWP == null)
         {
             SetNextWaypoint(WaypointsHandler.waypointList[currentWPIndex]);
@@ -58,13 +61,13 @@ public class EnemyBehaviour : MonoBehaviour
     private void MoveTowardsCurrentWaypoint()
     {
         transform.Translate(currentDir * (Time.deltaTime * speed),Space.World);
-        if (Vector2.Distance(transform.position, currentWP.position) <= sensitivity)
+        if (Vector2.Distance(transform.position, currentWP.position) <= checkpointSensitivity)
         {
             currentWPIndex++;
             if (currentWPIndex == WaypointsHandler.waypointList.Count)
             {
                 Debug.Log("Lost 1 Life");
-                Destroy(gameObject);
+                deathPort.Pop(gameObject);
             }
             else
             {
@@ -73,18 +76,24 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    public bool Pop(int damage)
+    private void UpdateSprite()
     {
+        Debug.Log(spriteRend.sprite + " - " + balloonSprites[health - 1]);
+        spriteRend.sprite = balloonSprites[health - 1];
+        Debug.Log(spriteRend.sprite + " - " + balloonSprites[health - 1]);
+    }
+    public void Pop(int damage)
+    {
+        if (health <= 0) return;
         health -= damage;
+        moneyPort.Earn(moneyWhenKilled);
         if (health <= 0)
         {
             speed = 0;
-            moneyPort.Earn(moneyWhenKilled);
             animator.SetTrigger("Popped");
             deathPort.Pop(gameObject);
-            return true;
+            return;
         }
-
-        return false;
+        UpdateSprite();
     }
 }

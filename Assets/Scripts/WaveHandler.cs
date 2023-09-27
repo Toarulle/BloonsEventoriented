@@ -5,27 +5,35 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
+[System.Serializable]
+public class Wave
+{
+    public List<int> amountOfBalloonsPerStrength = new List<int>(5);
+}
+    
 public class WaveHandler : MonoBehaviour
 {
     [SerializeField] private int currentWave = 0;
-    [SerializeField] private GameObject enemyPrefab = null;
-    [SerializeField] private List<int> enemiesPerWave = new List<int>();
+    [SerializeField] private List<GameObject> enemyPrefab = null;
+    [SerializeField] private List<Wave> waveList = new List<Wave>();
     [SerializeField] private DeathPortObject deathPort = null;
     
-    private float timeBetweenSpawns = 0.5f;
+    private float timeBetweenSpawns = 0.3f;
     private float time = 0.0f;
 
-    private int spawnedAmount = 0;
     private List<GameObject> enemies = new List<GameObject>();
     private bool spawnEnabled = false;
+    private int balloonToSpawn = 0;
+
     
 
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.N))
         {
-            if (enemies.Count == 0 && currentWave < enemiesPerWave.Count-1)
+            if (enemies.Count == 0 && currentWave < waveList.Count-1)
             {
                 NextWave();
             }
@@ -43,19 +51,28 @@ public class WaveHandler : MonoBehaviour
     private void NextWave()
     {
         currentWave++;
-        spawnedAmount = 0;
         enemies = new List<GameObject>();
         spawnEnabled = true;
+        balloonToSpawn = 0;
+        while (waveList[currentWave].amountOfBalloonsPerStrength[balloonToSpawn] == 0)
+        {
+            balloonToSpawn++;
+        }
     }
     
     private void SpawnEnemies()
     {
-        enemies.Add(Instantiate(enemyPrefab, transform.position, Quaternion.identity));
-        spawnedAmount++;
-        if (spawnedAmount == enemiesPerWave[currentWave])
+        if (waveList[currentWave].amountOfBalloonsPerStrength[balloonToSpawn] == 0)
         {
-            spawnEnabled = false;
+            balloonToSpawn++;
+            if (waveList[currentWave].amountOfBalloonsPerStrength[balloonToSpawn] == 0)
+            {
+                spawnEnabled = false;
+                return;
+            }
         }
+        enemies.Add(Instantiate(enemyPrefab[balloonToSpawn], transform.position, Quaternion.identity));
+        waveList[currentWave].amountOfBalloonsPerStrength[balloonToSpawn]--;
     }
 
     public void EnemyDied(DeathPortObject deathPort, GameObject poppedBalloon)

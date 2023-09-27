@@ -26,7 +26,7 @@ public class MoneyTextBehaviour : MonoBehaviour
 
     private void UpdateText()
     {
-        moneyText.text = "Money: " + moneyCounter.CurrentMoney;
+        moneyText.text = moneyCounter.CurrentMoney.ToString();
     }
 
     private void OnMoneyChange(MoneyCounterObject moneyCounter, int money)

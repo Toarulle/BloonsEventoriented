@@ -67,6 +67,7 @@ public class TowerBuilderBehaviour : MonoBehaviour
         var mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         towerInHand.prefab = Instantiate(tower.prefab,new Vector2(mousePos.x, mousePos.y),Quaternion.identity);
         towerInHand.cost = tower.cost;
+        towerInHand.prefab.GetComponentInChildren<WeaponBehaviour>().enabled = false;
         holdingTower = true;
     }
 
@@ -78,6 +79,7 @@ public class TowerBuilderBehaviour : MonoBehaviour
             {
                 if (moneyCounter.CurrentMoney >= towerInHand.cost)
                 {
+                    towerInHand.prefab.GetComponentInChildren<WeaponBehaviour>().enabled = true;
                     moneyPort.Spend(towerInHand.cost);
                     towerInHand = new TowerBlueprint();
                     holdingTower = false;

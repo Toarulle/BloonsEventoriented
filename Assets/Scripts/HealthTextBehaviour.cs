@@ -1,24 +1,21 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 
-public class MoneyTextBehaviour : MonoBehaviour
+public class HealthTextBehaviour : MonoBehaviour
 {
-    public TextMeshProUGUI moneyText = null;
-    public MoneyCounterObject moneyCounter = null;
+    public TextMeshProUGUI healthText = null;
+    public HealthCounterObject healthCounter = null;
 
     private void OnValidate()
     {
-        if (moneyCounter == null)
+        if (healthCounter == null)
         {
             Debug.LogWarning("Missing Money Counter reference.", this);
         }
-        if (moneyText == null)
+        if (healthText == null)
         {
             Debug.LogWarning("Missing Money Text reference.", this);
         }
@@ -26,10 +23,10 @@ public class MoneyTextBehaviour : MonoBehaviour
 
     private void UpdateText()
     {
-        moneyText.text = moneyCounter.CurrentMoney.ToString();
+        healthText.text = healthCounter.CurrentHealth.ToString();
     }
 
-    private void OnMoneyChange(MoneyCounterObject moneyCounter, int money)
+    private void HealthChanged(HealthCounterObject healthCounter, int health)
     {
         UpdateText();
     }
@@ -37,11 +34,11 @@ public class MoneyTextBehaviour : MonoBehaviour
     private void OnEnable()
     {
         UpdateText();
-        moneyCounter.onMoneyChange += OnMoneyChange;
+        healthCounter.onHealthChange += HealthChanged;
     }
 
     private void OnDisable()
     {
-        moneyCounter.onMoneyChange -= OnMoneyChange;
+        healthCounter.onHealthChange -= HealthChanged;
     }
 }

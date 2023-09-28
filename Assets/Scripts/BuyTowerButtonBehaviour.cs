@@ -13,12 +13,21 @@ public class BuyTowerButtonBehaviour : MonoBehaviour
         buttonText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    public void SetTextOnButton(TowerBlueprint tower)
+    public void SetTextOnButton(string text, int cost)
     {
         if (buttonText == null)
         {
             Start();
         }
-        buttonText.text = tower.prefab.name + Environment.NewLine + "$" + tower.cost;
+        buttonText.text = text + Environment.NewLine + "$" + cost;
+    }
+    
+    public void SetTextOnButton(string text)
+    {
+        if (buttonText == null)
+        {
+            Start();
+        }
+        buttonText.text = text;
     }
 }

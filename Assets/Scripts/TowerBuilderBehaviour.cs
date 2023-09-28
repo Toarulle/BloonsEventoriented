@@ -12,9 +12,10 @@ public class TowerBuilderBehaviour : MonoBehaviour
     public MoneyCounterObject moneyCounter = null;
     private bool holdingTower = false;
     private TowerBlueprint towerInHand = new TowerBlueprint();
+    private TowerBehaviour towerInHandBehaviour = null;
     private Camera mainCamera = null;
-    private Color blockedGizmoColor = Color.red;
-    private Color normalGizmoColor = Color.white;
+    private Color blockedGizmoColor = new Color(0.8f,0f,0f,0.55f);
+    private Color normalGizmoColor = new Color(0.4f,0.4f,0.4f,0.55f);
     private Color currentGizmoColor = Color.white;
 
     private static TowerBuilderBehaviour instance = null;
@@ -35,6 +36,7 @@ public class TowerBuilderBehaviour : MonoBehaviour
             Destroy(gameObject);
         }
 
+        currentGizmoColor = normalGizmoColor;
         mainCamera = Camera.main;
     }
 
@@ -48,6 +50,7 @@ public class TowerBuilderBehaviour : MonoBehaviour
         {
             currentGizmoColor = blockedGizmoColor;
         }
+        towerInHand.prefab.GetComponent<TowerBehaviour>().UpdateRangeColor(currentGizmoColor);
         
         TowerFollowMouse();
         ReleaseTowerFromHand();
@@ -68,7 +71,11 @@ public class TowerBuilderBehaviour : MonoBehaviour
         towerInHand.prefab = Instantiate(tower.prefab,new Vector2(mousePos.x, mousePos.y),Quaternion.identity);
         towerInHand.cost = tower.cost;
         towerInHand.prefab.GetComponentInChildren<WeaponBehaviour>().enabled = false;
+        towerInHand.prefab.layer = LayerMask.NameToLayer("Default");
         holdingTower = true;
+        towerInHandBehaviour = towerInHand.prefab.GetComponent<TowerBehaviour>();
+        towerInHandBehaviour.UpdateCurrentWeapon();
+        towerInHandBehaviour.EnableShowRange();
     }
 
     private void PlaceTower(bool isPlacedCorrect)
@@ -79,9 +86,12 @@ public class TowerBuilderBehaviour : MonoBehaviour
             {
                 if (moneyCounter.CurrentMoney >= towerInHand.cost)
                 {
+                    towerInHand.prefab.layer = LayerMask.NameToLayer("Towers");
                     towerInHand.prefab.GetComponentInChildren<WeaponBehaviour>().enabled = true;
                     moneyPort.Spend(towerInHand.cost);
+                    towerInHandBehaviour.DisableShowRange();
                     towerInHand = new TowerBlueprint();
+                    towerInHandBehaviour = null;
                     holdingTower = false;
                 }
                 else
@@ -92,7 +102,7 @@ public class TowerBuilderBehaviour : MonoBehaviour
             }
             else
             {
-                Debug.Log("You can't place towers on the road");
+                Debug.Log("You can't place towers on the road or on other towers");
             }
         }
     }
@@ -100,10 +110,12 @@ public class TowerBuilderBehaviour : MonoBehaviour
     private bool CheckCorrectPlacement()
     {
         Vector2 towerPos = towerInHand.prefab.transform.position;
-        int layerMask = LayerMask.GetMask("Road");
+        int layerMaskRoad = LayerMask.GetMask("Road");
+        int layerMaskTowers = LayerMask.GetMask("Towers");
 
-        Collider2D colliderRoad = Physics2D.OverlapBox(towerPos, new Vector2(distanceFromRoad,distanceFromRoad), 0, layerMask);
-        if (colliderRoad != null)
+        Collider2D colliderRoad = Physics2D.OverlapBox(towerPos, new Vector2(distanceFromRoad,distanceFromRoad), 0, layerMaskRoad);
+        Collider2D colliderTowers = Physics2D.OverlapCircle(towerPos, distanceFromRoad/2f, layerMaskTowers);
+        if (colliderRoad != null || colliderTowers != null)
         {
             return false;
         }

@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +19,7 @@ public class ShopBehaviour : MonoBehaviour
         {
             var newButton = Instantiate(buttonPrefab, buttonPanel.transform);
             newButton.GetComponent<Button>().onClick.AddListener(() => towerBuilder.GrabTower(tower));
-            newButton.GetComponent<BuyTowerButtonBehaviour>().SetTextOnButton(tower);
+            newButton.GetComponent<BuyTowerButtonBehaviour>().SetTextOnButton(tower.prefab.name, tower.cost);
         }
     }
 }

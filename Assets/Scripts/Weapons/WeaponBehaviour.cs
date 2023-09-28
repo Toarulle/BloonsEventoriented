@@ -6,28 +6,31 @@ using UnityEngine.Serialization;
 
 public class WeaponBehaviour : MonoBehaviour
 {
-    [SerializeField] private int damage = 1;
-    [SerializeField] private int pierce = 0;
-    [SerializeField] private float shotsPerMinute = 60f;
-    [SerializeField] public float range = 0f;
+    [SerializeField] public int damage = 1;
+    [SerializeField] public int pierce = 0;
+    [SerializeField] public float shotsPerSecond = 1f;
+    [SerializeField] public float range = 1f;
     [SerializeField] public GameObject projectile = null;
+    [SerializeField] public GameObject rangeIndicator = null;
     [SerializeField] public Transform projectileOrigin = null;
-    private float shootTime = 0f;
+    protected float shootTime = 0f;
 
-    private EnemyBehaviour currentTarget = null;
-    private TowerBehaviour tower = null;
-    private bool hasTarget = false;
+    protected EnemyBehaviour currentTarget = null;
+    protected TowerBehaviour tower = null;
+    protected bool hasTarget = false;
+    private SpriteRenderer rangeSpriteRenderer;
 
-    private void Start()
+    protected virtual void Start()
     {
         tower = GetComponentInParent<TowerBehaviour>();
+        rangeSpriteRenderer = rangeIndicator.GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
     {
         shootTime += Time.deltaTime;
 
-        if (shootTime >= 60f/shotsPerMinute)
+        if (shootTime >= 1f/shotsPerSecond)
         {
             UpdateTarget();
             if (!hasTarget) return;
@@ -38,31 +41,30 @@ public class WeaponBehaviour : MonoBehaviour
         }
     }
 
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
-        if (range < 0f)
+        if (range <= 0f)
         {
             range = 0f;
-            Debug.LogWarning("Range has to be non-negative");
+            Debug.LogWarning("Range has to be larger than zero");
         }
         if (damage < 0)
         {
             damage = 0;
             Debug.LogWarning("Range has to be non-negative");
         }
-        if (shotsPerMinute <= 0f)
+        if (shotsPerSecond <= 0f)
         {
-            shotsPerMinute = 0f;
+            shotsPerSecond = 0f;
             Debug.LogWarning("Time Between Shots has to be non-negative, non-zero");
         }
     }
 
-    private void Shoot()
+    protected virtual void Shoot()
     {
         if (!currentTarget.enabled)
         {
             UpdateTarget();
-            Debug.Log(currentTarget);
         }
         var projRot = tower.RotateToTarget(currentTarget.transform.position);
         ProjectileBehaviour proj = Instantiate(projectile, projectileOrigin.position, projRot)
@@ -70,7 +72,7 @@ public class WeaponBehaviour : MonoBehaviour
         proj.Init(currentTarget.gameObject, damage, pierce);
     }
 
-    private void UpdateTarget()
+    protected void UpdateTarget()
     {
         Vector2 pos = transform.position;
         int layerMask = LayerMask.GetMask("Balloons");
@@ -92,6 +94,26 @@ public class WeaponBehaviour : MonoBehaviour
         }
     }
 
+    public void ShowRange()
+    {
+        rangeIndicator.transform.localScale = new Vector3(range * 4, range * 4, 1);
+        if (rangeSpriteRenderer == null)
+        {
+            Start();
+        }
+        rangeSpriteRenderer.enabled = true;
+    }
+
+    public void DontShowRange()
+    {
+        rangeSpriteRenderer.enabled = false;
+    }
+    
+    public void UpdateRangeColor(Color color)
+    {
+        rangeIndicator.GetComponent<SpriteRenderer>().color = color;
+    }
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, range);

@@ -113,6 +113,7 @@ MonoBehaviour:
   animator: {fileID: -4643344997183189054}
   deathPort: {fileID: 11400000, guid: 24f6c1c6072e6b84ca2d2a04a5110529, type: 2}
   moneyPort: {fileID: 11400000, guid: ac518e07a3c8d5d45b9545b5bcc849e8, type: 2}
+  healthPort: {fileID: 11400000, guid: 81a609f36da6442448e2824914bb6fa1, type: 2}
 --- !u!58 &2405982933113905991
 CircleCollider2D:
   m_ObjectHideFlags: 0

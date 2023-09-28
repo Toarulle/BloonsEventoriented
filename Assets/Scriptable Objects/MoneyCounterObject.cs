@@ -1,13 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "MoneyCounter", menuName = "Bloons TD/Money Counter", order = 2)]
 public class MoneyCounterObject : ScriptableObject
 {
-    public UnityAction<MoneyCounterObject, int> onChange = delegate{};
+    public UnityAction<MoneyCounterObject, int> onMoneyChange = delegate{};
 
+    public int startingMoney = 600;
     private int currentMoney = 0;
 
     public int CurrentMoney
@@ -20,8 +23,13 @@ public class MoneyCounterObject : ScriptableObject
             {
                 int moneyExchange = value - currentMoney;
                 currentMoney = value;
-                onChange(this, moneyExchange);
+                onMoneyChange(this, moneyExchange);
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        CurrentMoney = startingMoney;
     }
 }

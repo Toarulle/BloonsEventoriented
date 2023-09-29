@@ -18,6 +18,11 @@ public class UpgradedDartWeapon : WeaponBehaviour
         base.OnValidate();
     }
 
+    public override void UpgradeSpeed()
+    {
+        shotsPerSecond *= 1.1f;
+    }
+
     protected override void Shoot()
     {
         if (!currentTarget.enabled)

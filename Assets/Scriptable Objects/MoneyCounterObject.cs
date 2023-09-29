@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "MoneyCounter", menuName = "Bloons TD/Money Counter", order = 2)]
 public class MoneyCounterObject : ScriptableObject
@@ -28,8 +29,18 @@ public class MoneyCounterObject : ScriptableObject
         }
     }
 
+    private void SetStartMoney(Scene scene, LoadSceneMode mode)
+    {
+        CurrentMoney = startingMoney;   
+    }
     private void OnEnable()
     {
         CurrentMoney = startingMoney;
+        SceneManager.sceneLoaded += SetStartMoney;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= SetStartMoney;
     }
 }

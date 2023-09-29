@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43ef24fbbf6338246a8c14c166a6466c, type: 3}
   m_Name: HealthCounter
   m_EditorClassIdentifier: 
-  startingHealth: 40
+  startingHealth: 50

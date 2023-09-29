@@ -101,15 +101,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
-  speed: 2
   checkpointSensitivity: 0.1
   moneyWhenKilled: 1
-  balloonSprites:
-  - {fileID: 21300000, guid: 2d880304915ea8244a1669d2503b9d0e, type: 3}
-  - {fileID: 21300000, guid: b10f730b6f82de24e9289a0458b39caf, type: 3}
-  - {fileID: 21300000, guid: 242900e0e0c57c74c9e5ca56317d940b, type: 3}
-  - {fileID: 21300000, guid: 91f3f42216594714d84341e9c23a52a8, type: 3}
-  - {fileID: 21300000, guid: d742e1386b1442648805a886ec3f03d4, type: 3}
+  enemyInfo: {fileID: 11400000, guid: 7599b3b63758e314ca95cb457a040f32, type: 2}
   deathPort: {fileID: 11400000, guid: 24f6c1c6072e6b84ca2d2a04a5110529, type: 2}
   moneyPort: {fileID: 11400000, guid: ac518e07a3c8d5d45b9545b5bcc849e8, type: 2}
   healthPort: {fileID: 11400000, guid: 81a609f36da6442448e2824914bb6fa1, type: 2}
@@ -158,7 +152,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3696498462990897554}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: b28ffb402184ba648a7a1a5503645b6f, type: 2}
   m_CullingMode: 0

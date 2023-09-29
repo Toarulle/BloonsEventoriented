@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class GameBehaviour : MonoBehaviour
 {
@@ -16,6 +18,25 @@ public class GameBehaviour : MonoBehaviour
     private TowerBehaviour selectedTower = null;
     private bool towerIsSelected = false;
     private Camera mainCamera;
+
+    private static GameBehaviour instance = null;
+    public static GameBehaviour Instance
+    {
+        get { return instance; }
+    }
+    
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -52,6 +73,8 @@ public class GameBehaviour : MonoBehaviour
 
     private void Update()
     {
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("GameOver")) return;
+        
         if (Input.GetMouseButtonDown(0) && towerIsSelected && !CheckForUIAtClick())
         {
             DeSelectTower();
@@ -120,8 +143,20 @@ public class GameBehaviour : MonoBehaviour
     public void LoseHealth(HealthPortObject healthPort, int health)
     {
         healthCounter.CurrentHealth -= health;
+        if (healthCounter.CurrentHealth == 0)
+        {
+            GameOver();
+        }
     }
-
+    public void RestartGame()
+    {
+        Debug.Log("Pressed button");
+        SceneManager.LoadScene("Game");
+    }
+    private void GameOver()
+    {
+        SceneManager.LoadScene("GameOver");
+    }
     public void OnEnable()
     {
         moneyPort.onEarn += GetMoney;

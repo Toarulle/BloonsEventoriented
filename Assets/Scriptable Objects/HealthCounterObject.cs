@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "HealthCounter", menuName = "Bloons TD/Health Counter", order = 3)]
 public class HealthCounterObject : ScriptableObject
@@ -36,8 +37,18 @@ public class HealthCounterObject : ScriptableObject
         }
     }
 
+    private void SetStartHealth(Scene scene, LoadSceneMode mode)
+    {
+        CurrentHealth = startingHealth;
+    }
     private void OnEnable()
     {
         CurrentHealth = startingHealth;
+        SceneManager.sceneLoaded += SetStartHealth;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= SetStartHealth;
     }
 }

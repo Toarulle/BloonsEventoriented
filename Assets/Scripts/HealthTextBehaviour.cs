@@ -30,7 +30,7 @@ public class HealthTextBehaviour : MonoBehaviour
     {
         UpdateText();
     }
-
+    
     private void OnEnable()
     {
         UpdateText();

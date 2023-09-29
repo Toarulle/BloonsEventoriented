@@ -26,10 +26,17 @@ public class UpgradeTowerBehaviour : MonoBehaviour
                 moneyPort.Spend(nextUpgradeCost);
             }
         }
+        var buttonBehavior = buttons[0].GetComponent<BuyTowerButtonBehaviour>();
+        var buttonButton = buttons[0].GetComponent<Button>();
 
         if (towerBehaviour.maxLevel)
         {
-            buttons[0].GetComponent<BuyTowerButtonBehaviour>().SetTextOnButton("Max level");
+            buttonBehavior.SetTextOnButton("Max level");
+            buttonButton.enabled = false;
+        }
+        else
+        {
+            buttonBehavior.SetTextOnButton("Upgrade Tower", towerBehaviour.nextUpgradeCost);
         }
     }
     
@@ -40,14 +47,15 @@ public class UpgradeTowerBehaviour : MonoBehaviour
             towerBehaviour.EnableShowRange();
             showingUpgradeButton = true;
             buttons.Add(Instantiate(buttonPrefab, buttonPanel.transform));
+            var buttonBehavior = buttons[0].GetComponent<BuyTowerButtonBehaviour>();
             if (!towerBehaviour.maxLevel)
             {
                 buttons[0].GetComponent<Button>().onClick.AddListener(() => UpgradeTower(towerBehaviour));
-                buttons[0].GetComponent<BuyTowerButtonBehaviour>().SetTextOnButton("Upgrade Tower", towerBehaviour.nextUpgradeCost);
+                buttonBehavior.SetTextOnButton("Upgrade Tower", towerBehaviour.nextUpgradeCost);
                 
                 return;
             }
-            buttons[0].GetComponent<BuyTowerButtonBehaviour>().SetTextOnButton("Max level");
+            buttonBehavior.SetTextOnButton("Max level");
         }
     }
 

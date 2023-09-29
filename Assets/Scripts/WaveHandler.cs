@@ -18,7 +18,10 @@ public class WaveHandler : MonoBehaviour
     [SerializeField] private int currentWave = 0;
     [SerializeField] private List<GameObject> enemyPrefab = null;
     [SerializeField] private List<Wave> waveList = new List<Wave>();
+    [SerializeField] private List<int> moneyPerWave = new List<int>();
     [SerializeField] private DeathPortObject deathPort = null;
+    [SerializeField] private MoneyPortObject moneyPort = null;
+    [SerializeField] private GameObject nextWaveButton = null;
     
     private float timeBetweenSpawns = 0.3f;
     private float time = 0.0f;
@@ -31,14 +34,6 @@ public class WaveHandler : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.N))
-        {
-            if (enemies.Count == 0 && currentWave < waveList.Count-1)
-            {
-                NextWave();
-            }
-        }
-        
         if (!spawnEnabled) return;
         time += Time.deltaTime;
         if (time >= timeBetweenSpawns)
@@ -48,15 +43,19 @@ public class WaveHandler : MonoBehaviour
         }
     }
 
-    private void NextWave()
+    public void NextWave()
     {
-        currentWave++;
-        enemies = new List<GameObject>();
-        spawnEnabled = true;
-        balloonToSpawn = 0;
-        while (waveList[currentWave].amountOfBalloonsPerStrength[balloonToSpawn] == 0)
+        if (enemies.Count == 0 && currentWave < waveList.Count - 1)
         {
-            balloonToSpawn++;
+            currentWave++;
+            enemies = new List<GameObject>();
+            spawnEnabled = true;
+            balloonToSpawn = 0;
+            while (waveList[currentWave].amountOfBalloonsPerStrength[balloonToSpawn] == 0)
+            {
+                balloonToSpawn++;
+            }
+            nextWaveButton.SetActive(false);
         }
     }
     
@@ -78,6 +77,11 @@ public class WaveHandler : MonoBehaviour
     public void EnemyDied(DeathPortObject deathPort, GameObject poppedBalloon)
     {
         enemies.Remove(poppedBalloon);
+        if (enemies.Count == 0)
+        { 
+            moneyPort.Earn(moneyPerWave[currentWave]);
+            nextWaveButton.SetActive(true);
+        }
     }
 
     private void OnEnable()

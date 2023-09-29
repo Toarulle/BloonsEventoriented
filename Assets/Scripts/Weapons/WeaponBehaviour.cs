@@ -26,7 +26,7 @@ public class WeaponBehaviour : MonoBehaviour
         rangeSpriteRenderer = rangeIndicator.GetComponent<SpriteRenderer>();
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         shootTime += Time.deltaTime;
 
@@ -58,8 +58,18 @@ public class WeaponBehaviour : MonoBehaviour
             shotsPerSecond = 0f;
             Debug.LogWarning("Time Between Shots has to be non-negative, non-zero");
         }
+
+        rangeIndicator.transform.localScale = new Vector3(range*4, range*4, 1);
     }
 
+    public virtual void UpgradeSpeed()
+    {
+        shotsPerSecond *= 1.05f;
+    }
+    public virtual void UpgradeRange()
+    {
+        range *= 1.1f;
+    }
     protected virtual void Shoot()
     {
         if (!currentTarget.enabled)
@@ -72,7 +82,7 @@ public class WeaponBehaviour : MonoBehaviour
         proj.Init(currentTarget.gameObject, damage, pierce);
     }
 
-    protected void UpdateTarget()
+    protected virtual void UpdateTarget()
     {
         Vector2 pos = transform.position;
         int layerMask = LayerMask.GetMask("Balloons");

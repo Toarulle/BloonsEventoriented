@@ -29,7 +29,12 @@ public class ProjectileBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        col.GetComponent<EnemyBehaviour>().Pop(damage);
+        EnemyBehaviour enemy = col.GetComponent<EnemyBehaviour>(); 
+        if (enemy.Popped)
+        {
+            return;
+        }
+        enemy.Pop(damage);
         if (pierce <= 0)
         {
             Destroy(gameObject);

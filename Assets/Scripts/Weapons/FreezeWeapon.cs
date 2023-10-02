@@ -53,10 +53,11 @@ public class FreezeWeapon : WeaponBehaviour
 
     protected override void Shoot()
     {
+        tower.ShootAnimation();
         foreach (var target in currentTargets)
         {
-            target.Freeze();
             target.Pop(damage);
+            target.Freeze();
         }
     }
 

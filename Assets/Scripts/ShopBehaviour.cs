@@ -19,7 +19,9 @@ public class ShopBehaviour : MonoBehaviour
         {
             var newButton = Instantiate(buttonPrefab, buttonPanel.transform);
             newButton.GetComponent<Button>().onClick.AddListener(() => towerBuilder.GrabTower(tower));
-            newButton.GetComponent<BuyTowerButtonBehaviour>().SetTextOnButton(tower.prefab.name, tower.cost);
+            var buttonBehaviour = newButton.GetComponent<BuyTowerButtonBehaviour>();
+            buttonBehaviour.SetTextOnButton(tower.prefab.name, tower.cost);
+            buttonBehaviour.SetSprite(tower.prefab.GetComponent<SpriteRenderer>().sprite);
         }
     }
 }

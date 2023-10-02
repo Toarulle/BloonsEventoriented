@@ -124,7 +124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2100107058705411404}
-  - component: {fileID: 6133449219934449547}
+  - component: {fileID: 5397686970585111097}
   m_Layer: 2
   m_Name: UpgradedDartWeapon
   m_TagString: Untagged
@@ -148,7 +148,7 @@ Transform:
   m_Father: {fileID: 6133449220698387498}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6133449219934449547
+--- !u!114 &5397686970585111097
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2641465767091109501}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf8ec3b646702744bab499a9241753f0, type: 3}
+  m_Script: {fileID: 11500000, guid: b710b1092d522394b9452303103ee506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
@@ -170,8 +170,8 @@ MonoBehaviour:
   projectilesPerShot: 3
   projectilesOffset:
   - {x: 0, y: 0, z: 0}
-  - {x: -0.1, y: 0.13, z: 0}
-  - {x: -0.1, y: -0.13, z: 0}
+  - {x: 0, y: 0.2, z: 0}
+  - {x: 0, y: -0.2, z: 0}
 --- !u!1 &4226297130865012983
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,6 +308,9 @@ MonoBehaviour:
   projectile: {fileID: 8295609167001373451, guid: 6e61ba66c2702ba41bad23b18324b4e9, type: 3}
   rangeIndicator: {fileID: 4226297130865012983}
   projectileOrigin: {fileID: 4482947291187653820}
+  projectilesPerShot: 1
+  projectilesOffset:
+  - {x: 0, y: 0, z: 0}
 --- !u!1 &6133449220698387496
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +439,7 @@ MonoBehaviour:
   maxLevel: 0
   towerWeapons:
   - {fileID: 6133449219169639357}
-  - {fileID: 6133449219934449547}
+  - {fileID: 5397686970585111097}
   upgradeCost: 00000000960000009600000096000000
 --- !u!61 &6133449219934449549
 BoxCollider2D:

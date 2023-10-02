@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 131d11ebd0ae74a49a5af1c2543d88b8, type: 3}
   m_Name: MoneyCounter
   m_EditorClassIdentifier: 
-  startingMoney: 600
+  startingMoney: 800

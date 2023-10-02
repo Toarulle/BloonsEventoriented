@@ -138,7 +138,7 @@ public class TowerBuilderBehaviour : MonoBehaviour
         {
             var towerPos = towerInHand.prefab.transform.position;
             Gizmos.color = currentGizmoColor;
-            Gizmos.DrawWireSphere(towerPos,towerInHand.prefab.GetComponentInChildren<BasicDartWeapon>().range);
+            Gizmos.DrawWireSphere(towerPos,towerInHand.prefab.GetComponentInChildren<DartWeapon>().range);
             Gizmos.DrawWireCube(towerPos,(distanceFromRoad-0.3f)*Vector3.one);
         }
     }

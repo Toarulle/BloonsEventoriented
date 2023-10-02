@@ -76,6 +76,7 @@ public class WeaponBehaviour : MonoBehaviour
         {
             UpdateTarget();
         }
+        tower.ShootAnimation();
         var projRot = tower.RotateToTarget(currentTarget.transform.position);
         ProjectileBehaviour proj = Instantiate(projectile, projectileOrigin.position, projRot)
             .GetComponent<ProjectileBehaviour>();

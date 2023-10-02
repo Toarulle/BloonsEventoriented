@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
-using UnityEditor.Build;
 using UnityEngine;
 
 public class TowerBehaviour : MonoBehaviour
@@ -61,10 +57,14 @@ public class TowerBehaviour : MonoBehaviour
     {
         Start();
     }
-    
-    public Quaternion RotateToTarget(Vector3 targetPosition)
+
+
+    public void ShootAnimation()
     {
         anim.SetTrigger("Shoot");
+    }
+    public Quaternion RotateToTarget(Vector3 targetPosition)
+    {
         var newDirection = targetPosition-transform.position;
         var newRotation = Quaternion.FromToRotation(originalDirection, newDirection);
         transform.rotation = newRotation;

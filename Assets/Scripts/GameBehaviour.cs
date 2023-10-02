@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class GameBehaviour : MonoBehaviour
 {
-    public DeathPortObject deathPort = null;
     public MoneyPortObject moneyPort = null;
     public MoneyCounterObject moneyCounter = null;
     public HealthPortObject healthPort = null;
@@ -45,10 +44,6 @@ public class GameBehaviour : MonoBehaviour
 
     private void OnValidate()
     {
-        if (deathPort == null)
-        {
-            Debug.LogWarning("Missing Death Port reference.", this);
-        }
         if (moneyPort == null)
         {
             Debug.LogWarning("Missing Money Port reference.", this);
@@ -92,7 +87,6 @@ public class GameBehaviour : MonoBehaviour
         {
             DeSelectTower();
         }
-
         if (CheckForTowerAtClick())
         {
             selectTowerPort.Select(selectedTower);
@@ -150,7 +144,6 @@ public class GameBehaviour : MonoBehaviour
     }
     public void RestartGame()
     {
-        Debug.Log("Pressed button");
         SceneManager.LoadScene("Game");
     }
     private void GameOver()

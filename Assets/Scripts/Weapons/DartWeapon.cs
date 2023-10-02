@@ -1,22 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class UpgradedDartWeapon : WeaponBehaviour
+public class DartWeapon : WeaponBehaviour
 {
     [SerializeField] private int projectilesPerShot = 3;
 
     [SerializeField] private List<Vector3> projectilesOffset = new List<Vector3>();
-
-    protected override void Start()
-    {
-        base.Start();
-    }
-
-    protected override void OnValidate()
-    {
-        base.OnValidate();
-    }
 
     public override void UpgradeSpeed()
     {
@@ -32,7 +24,8 @@ public class UpgradedDartWeapon : WeaponBehaviour
         var projRot = tower.RotateToTarget(currentTarget.transform.position);
         for (int i = 0; i < projectilesPerShot; i++)
         {
-            ProjectileBehaviour proj = Instantiate(projectile, projectileOrigin.position+projectilesOffset[i], projRot)
+            ProjectileBehaviour proj = Instantiate(projectile, 
+                    projectileOrigin.position+projectilesOffset[i], projRot)
                 .GetComponent<ProjectileBehaviour>();
             proj.Init(currentTarget.gameObject, damage, pierce);
         }
